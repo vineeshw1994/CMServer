@@ -137,54 +137,121 @@ console.log('hiiii');
   // });
   
 
+  // router.post('/saveData', async (req, res) => {
+  //   try {
+  //     const { categoryId, data } = req.body;
+  
+  //     // Fetch the category by ID from the MasterConfiguration table
+  //     const category = await MasterConfiguration.findOne({
+  //       where: { id: categoryId },
+  //     });
+  
+  //     if (category) {
+  //       // Parse the existing columnMapping if it's a string
+  //       let columnMapping = [];
+  //       try {
+  //         columnMapping = JSON.parse(category.columnMapping).columnMapping || [];
+  //       } catch (error) {
+  //         console.error('Error parsing columnMapping:', error);
+  //         return res.status(400).json({ error: 'Invalid columnMapping format' });
+  //       }
+  
+  //       // Ensure columnMapping is an array before using forEach
+  //       if (!Array.isArray(columnMapping)) {
+  //         return res.status(400).json({ error: 'Invalid columnMapping structure' });
+  //       }
+  
+  //       // Map the data from the form to the respective columns
+  //       Object.keys(data).forEach((key) => {
+  //         columnMapping.forEach((col) => {
+  //           if (col[key] !== undefined) {
+  //             col[key] = data[key];  // Add form data to the column
+  //           }
+  //         });
+  //       });
+  
+  //       // Update the category with the new columnMapping
+  //       category.columnMapping =  columnMapping 
+  
+  //       // Save the updated category in the database
+  //       await category.save();
+  
+  //       res.status(200).json({ message: 'Data saved successfully!' });
+  //     } else {
+  //       res.status(404).json({ error: 'Category not found' });
+  //     }
+  //   } catch (error) {
+  //     console.error('Error saving data:', error);
+  //     res.status(500).json({ error: 'Internal server error' });
+  //   }
+  // });
   router.post('/saveData', async (req, res) => {
+    console.log('Request Body:', req.body); // Log the incoming request body
+  
     try {
-      const { categoryId, data } = req.body;
+      const { categoryId, data } = req.body; // Extract categoryId and data from the request body
+      console.log('Category ID:', categoryId); // Log the category ID
+      console.log('Data:', data); // Log the incoming column data
   
       // Fetch the category by ID from the MasterConfiguration table
       const category = await MasterConfiguration.findOne({
         where: { id: categoryId },
       });
   
-      if (category) {
-        // Parse the existing columnMapping if it's a string
-        let columnMapping = [];
-        try {
-          columnMapping = JSON.parse(category.columnMapping).columnMapping || [];
-        } catch (error) {
-          console.error('Error parsing columnMapping:', error);
-          return res.status(400).json({ error: 'Invalid columnMapping format' });
-        }
+      if (!category) {
+        console.log('Category not found'); // Log if category is not found
+        return res.status(404).json({ error: 'Category not found' });
+      }
   
-        // Ensure columnMapping is an array before using forEach
-        if (!Array.isArray(columnMapping)) {
-          return res.status(400).json({ error: 'Invalid columnMapping structure' });
-        }
+      console.log('Fetched Category:', category); // Log the fetched category object
   
-        // Map the data from the form to the respective columns
-        Object.keys(data).forEach((key) => {
-          columnMapping.forEach((col) => {
-            if (col[key] !== undefined) {
-              col[key] = data[key];  // Add form data to the column
-            }
+      // Parse the existing columnMapping if it's a string
+      let columnMapping = [];
+      try {
+        columnMapping = JSON.parse(category.columnMapping).columnMapping || [];
+        console.log('Parsed Column Mapping:', columnMapping); // Log the parsed columnMapping
+      } catch (error) {
+        console.error('Error parsing columnMapping:', error);
+        return res.status(400).json({ error: 'Invalid columnMapping format' });
+      }
+  
+      // Flatten the incoming data and merge it with the existing columnMapping
+      let updatedColumnMapping = [];
+  
+      // Check if there is any nested columnMapping in the incoming data
+      if (data.columnMapping && Array.isArray(data.columnMapping)) {
+        // Flatten nested columnMapping
+        data.columnMapping.forEach((item) => {
+          Object.keys(item).forEach((key) => {
+            updatedColumnMapping.push({ [key]: item[key] });
           });
         });
-  
-        // Update the category with the new columnMapping
-        category.columnMapping =  columnMapping 
-  
-        // Save the updated category in the database
-        await category.save();
-  
-        res.status(200).json({ message: 'Data saved successfully!' });
       } else {
-        res.status(404).json({ error: 'Category not found' });
+        // If no nested columnMapping, process the data as usual
+        Object.keys(data).forEach((columnKey) => {
+          const columnData = data[columnKey];
+          updatedColumnMapping.push({ [columnKey]: columnData });
+        });
       }
+  
+      console.log('Updated Column Mapping:', updatedColumnMapping); // Log the final updated columnMapping
+  
+      // Replace the columnMapping with the updated mapping
+      category.columnMapping =  updatedColumnMapping ;
+      console.log('Updated Category Column Mapping:', category.columnMapping); // Log the updated columnMapping string
+  
+      // Save the updated category in the database
+      await category.save();
+  
+      console.log('Category saved successfully'); // Log successful save
+      res.status(200).json({ message: 'Data saved successfully!' });
     } catch (error) {
       console.error('Error saving data:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+  
+  
   
   // Route to save data (POST request for adding data)
   // router.post('/saveData', (req, res) => {
