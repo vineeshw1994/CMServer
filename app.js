@@ -5,6 +5,7 @@ import sequelize from './config/db.js';
 import { syncMasterConfigutaionTable } from './models/masterModel.js';
 import cookieParser from 'cookie-parser';
 import technicalAdminRoute from './routes/technicalAdminRoute.js'
+import superAdminRoute from './routes/superAdminRoute.js'
 import bodyParser from 'body-parser';
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.use(cors({
 
 
 app.use('/api/teachnical',technicalAdminRoute)
+app.use('/api/superAdmin',superAdminRoute)
 
 
 const PORT = process.env.PORT;
