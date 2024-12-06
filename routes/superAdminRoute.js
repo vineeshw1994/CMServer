@@ -1,10 +1,12 @@
 import express from "express";
 
-import { saveCategory,ListMetaCard } from "../controllers/superAdminController/superAdmin.js";
+import { saveCategory,ListMetaCard,saveData,getCategoryColumn } from "../controllers/superAdminController/superAdmin.js";
 const router = express.Router();
 
 router.post('/saveCategory',saveCategory)
 router.get('/listMetaCard',ListMetaCard)
+router.post('/saveData',saveData)
+router.get('/getCategoryColumns/:id',getCategoryColumn)
 
 
 
