@@ -171,7 +171,7 @@ console.log('hiiii');
         });
   
         // Update the category with the new columnMapping
-        category.columnMapping = JSON.stringify({ columnMapping });
+        category.columnMapping =  columnMapping 
   
         // Save the updated category in the database
         await category.save();
