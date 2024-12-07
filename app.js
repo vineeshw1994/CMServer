@@ -6,6 +6,8 @@ import { syncMasterConfigutaionTable } from './models/masterModel.js';
 import cookieParser from 'cookie-parser';
 import technicalAdminRoute from './routes/technicalAdminRoute.js'
 import superAdminRoute from './routes/superAdminRoute.js'
+import businessAdminRoute from './routes/bussinessAdminRoute.js'
+
 import bodyParser from 'body-parser';
 
 dotenv.config();
@@ -27,6 +29,7 @@ app.use(cors({
 
 app.use('/api/teachnical',technicalAdminRoute)
 app.use('/api/superAdmin',superAdminRoute)
+app.use('/api/businessAdmin',businessAdminRoute)
 
 
 const PORT = process.env.PORT;
