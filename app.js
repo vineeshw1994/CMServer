@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import sequelize from './config/db.js';
-import { syncMasterConfigutaionTable } from './models/masterModel.js';
+import { syncMasterConfigurationTable } from './models/masterModel.js';
 import cookieParser from 'cookie-parser';
 import technicalAdminRoute from './routes/technicalAdminRoute.js'
 import superAdminRoute from './routes/superAdminRoute.js'
@@ -35,7 +35,7 @@ app.listen(PORT, async () => {
     console.log(`Server running on port ${PORT}`);
     try {
       await sequelize.authenticate();
-      syncMasterConfigutaionTable();
+      syncMasterConfigurationTable();
       console.log('Database connection established successfully.');
     } catch (error) {
       console.error('Unable to connect to the database:', error);
