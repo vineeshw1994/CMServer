@@ -1,25 +1,19 @@
 [
   {
-    "name": "MasterConfiguration",
-    "createdAt": "2024-12-09T12:35:47.235Z",
-    "version": "1.0",
-    "description": "Metadata file for assets folder"
-  },
-  {
-    "category": "MOBILE",
-    "subcategory": "sony",
+    "category": "rakesh",
+    "subcategory": "s",
     "columnMapping": [
       {
-        "column_3": ""
+        "column_1": ""
       },
       {
-        "column_7": ""
+        "column_6": ""
       }
     ]
   },
   {
-    "category": "MOBILE",
-    "subcategory": "sony",
+    "category": "Rakesh",
+    "subcategory": "s",
     "columnMapping": [
       {
         "column_1": ""
@@ -28,7 +22,19 @@
         "column_2": ""
       },
       {
-        "column_3": ""
+        "column_6": ""
+      }
+    ]
+  },
+  {
+    "category": "new",
+    "subcategory": "newww",
+    "columnMapping": [
+      {
+        "column_1": ""
+      },
+      {
+        "column_2": ""
       }
     ]
   }

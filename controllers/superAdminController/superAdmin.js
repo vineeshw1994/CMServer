@@ -1,3 +1,7 @@
+import  fs from 'fs' ;
+import path from "path";
+import { fileURLToPath } from "url";
+
 import MasterConfiguration from "../../models/masterModel.js";
 
 export const saveCategory = async(req,res)=>{
@@ -204,6 +208,77 @@ export const saveColumnName =async(req,res)=>{
   } catch (error) {
     console.error('Error saving column name:', error);
     res.status(500).json({ error: 'Internal server error' });
+    
+  }
+}
+
+
+export const updateMetadata =async(req,res)=>{
+  try {
+    const metadataObject = req.body; // Receive metadata from frontend
+console.log('req.body',req.body);
+const __filename = fileURLToPath(import.meta.url); // Get the file URL and convert it to a file path
+const __dirname = path.dirname(__filename); // Get the directory name from the file path
+
+  // Define the path to metadata.json file
+  const assetsPath = path.join(__dirname, '..', '..', 'assets'); 
+  const metadataFilePath = path.join(assetsPath, 'metadata.json');
+
+  // Check if the metadata.json file exists
+  if (fs.existsSync(metadataFilePath)) {
+    // Read the existing metadata from the file
+    const existingMetadata = JSON.parse(fs.readFileSync(metadataFilePath, 'utf-8'));
+console.log('existingMetadata',existingMetadata);
+
+    // Append the new metadata to the existing metadata array
+    existingMetadata.push(metadataObject);
+
+    // Write the updated metadata back to the file
+    fs.writeFileSync(metadataFilePath, JSON.stringify(existingMetadata, null, 2), 'utf-8');
+    console.log('New metadata appended to metadata.json');
+  } else {
+    // If file doesn't exist, create a new file with the metadata
+    fs.mkdirSync(assetsPath, { recursive: true }); // Create assets folder if it doesn't exist
+    fs.writeFileSync(metadataFilePath, JSON.stringify([metadataObject], null, 2), 'utf-8');
+    console.log('metadata.json file created and metadata saved.');
+  }
+
+  // Respond back with success message
+  res.json({ message: 'Metadata saved successfully', data: metadataObject });
+    
+  } catch (error) {
+    console.error('Error updating metadata:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+
+export const listMetaData =async(req,res)=>{
+  try {
+    const __filename = fileURLToPath(import.meta.url); // Get the file URL and convert it to a file path
+    const __dirname = path.dirname(__filename); // Get the directory of this file
+
+    // Adjust the path to metadata.json by going up two directories
+    const metadataFilePath = path.join(__dirname, '..', '..', 'assets', 'metadata.json');
+
+    // Check if metadata.json exists
+    if (fs.existsSync(metadataFilePath)) {
+      // Read the metadata.json file
+      fs.readFile(metadataFilePath, 'utf8', (err, data) => {
+        if (err) {
+          return res.status(500).json({ message: 'Error reading metadata.json' });
+        }
+        // Send the data as JSON response
+        res.json(JSON.parse(data));
+      });
+    } else {
+      return res.status(404).json({ message: 'Metadata file not found' });
+    }
+    
+  } catch (error) {
+    console.error('Error listing metadata:', error);
+    res.status(500).json({ error: 'Internal server error' });
+
     
   }
 }
