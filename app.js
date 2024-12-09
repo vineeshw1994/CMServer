@@ -10,6 +10,7 @@ import businessAdminRoute from './routes/bussinessAdminRoute.js'
 import authRoute from './routes/authRoute.js'
 
 import bodyParser from 'body-parser';
+import { syncUserTable } from './models/userModel.js';
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.listen(PORT, async () => {
     try {
       await sequelize.authenticate();
       syncMasterConfigurationTable();
+      syncUserTable();
       console.log('Database connection established successfully.');
     } catch (error) {
       console.error('Unable to connect to the database:', error);
