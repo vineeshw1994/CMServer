@@ -154,3 +154,57 @@ export const listColumns=async(req,res)=>{
   }
 }
 
+export const saveColumnName =async(req,res)=>{
+  try {
+    console.log('req',req.body);
+    const { category, subcategory, columnMapping } = req.body;
+
+    console.log('Request Body:', req.body); // For debugging purposes
+
+    // Step 1: Find the record in MasterConfiguration using category and subcategory
+    let record = await MasterConfiguration.findOne({
+      where: {
+        category: category,    // Match by category
+        subCategory: subcategory  // Match by subcategory
+      }
+    });
+
+    // Step 2: If the record doesn't exist, create a new one
+    if (!record) {
+      record = await MasterConfiguration.create({
+        category: category,
+        subCategory: subcategory
+      });
+      console.log(`New record created for category: ${category}, subcategory: ${subcategory}`);
+    }
+
+    // Step 3: Loop through the columnMapping to dynamically update columns
+    const updateData = {};
+
+    // Loop through the columnMapping array
+    for (const column of columnMapping) {
+      // Get the column name and its value
+      const columnKey = Object.keys(column)[0];  // Get the column name (e.g., 'column_2')
+      const columnValue = column[columnKey];     // Get the value (e.g., 'r4')
+
+      // Add to the updateData object
+      updateData[columnKey] = columnValue;
+    }
+
+    // Step 4: Update the record with the new values
+    await record.update(updateData);
+
+    // Step 5: Send a success response with the updated record
+    res.status(200).json({
+      message: 'Columns updated successfully!',
+      updatedRecord: record
+    });
+    
+    
+  } catch (error) {
+    console.error('Error saving column name:', error);
+    res.status(500).json({ error: 'Internal server error' });
+    
+  }
+}
+
