@@ -3,6 +3,7 @@ import MasterConfiguration from "../models/masterModel.js";
 import { columnList } from "../controllers/technicalAdmin/technicalAdmin.js";
 import  fs from 'fs' ;
 import path from "path";
+import { fileURLToPath } from "url";
 
 const router = express.Router();
 
@@ -42,7 +43,44 @@ console.log('columnMapping',columnMapping);
   }
 });
 
+router.post('/saveCategory', async (req, res) => {
+  try {
+    
+  
+  const metadataObject = req.body; // Receive metadata from frontend
+console.log('req.body',req.body);
+const __filename = fileURLToPath(import.meta.url); // Get the file URL and convert it to a file path
+const __dirname = path.dirname(__filename); // Get the directory name from the file path
 
+  // Define the path to metadata.json file
+  const assetsPath = path.join(__dirname, '..', 'assets');
+  const metadataFilePath = path.join(assetsPath, 'metadata.json');
+
+  // Check if the metadata.json file exists
+  if (fs.existsSync(metadataFilePath)) {
+    // Read the existing metadata from the file
+    const existingMetadata = JSON.parse(fs.readFileSync(metadataFilePath, 'utf-8'));
+console.log('existingMetadata',existingMetadata);
+
+    // Append the new metadata to the existing metadata array
+    existingMetadata.push(metadataObject);
+
+    // Write the updated metadata back to the file
+    fs.writeFileSync(metadataFilePath, JSON.stringify(existingMetadata, null, 2), 'utf-8');
+    console.log('New metadata appended to metadata.json');
+  } else {
+    // If file doesn't exist, create a new file with the metadata
+    fs.mkdirSync(assetsPath, { recursive: true }); // Create assets folder if it doesn't exist
+    fs.writeFileSync(metadataFilePath, JSON.stringify([metadataObject], null, 2), 'utf-8');
+    console.log('metadata.json file created and metadata saved.');
+  }
+
+  // Respond back with success message
+  res.json({ message: 'Metadata saved successfully', data: metadataObject });
+} catch (error) {
+    console.error('errror',error)
+}
+});
 // router.post('/saveCategory', async (req, res) => {
 //   const { category, subcategory,  columnMapping } = req.body;
 // console.log('hiiiiffffffffffffffffffffffffffffffffffff',req.body);
