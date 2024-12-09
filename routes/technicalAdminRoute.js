@@ -100,17 +100,34 @@ console.log('existingMetadata',existingMetadata);
 // });
 
 
-  router.get('/getCategories', async (req, res) => {
-console.log('hiiii');
+//   router.get('/getCategories', async (req, res) => {
+// console.log('hiiii');
 
-    try {
-      const categories = await MasterConfiguration.findAll();
-      res.status(200).json(categories); // Send the categories as JSON response
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      res.status(500).json({ error: 'Failed to fetch categories' });
-    }
-  });
+//     try {
+//       const categories = await MasterConfiguration.findAll();
+//       res.status(200).json(categories); // Send the categories as JSON response
+//     } catch (error) {
+//       console.error('Error fetching categories:', error);
+//       res.status(500).json({ error: 'Failed to fetch categories' });
+//     }
+//   });
+
+router.get('/getCategories', async(req, res) => {
+  // Get the current directory path using import.meta.url
+  const __filename = fileURLToPath(import.meta.url); // Get the file URL and convert it to a file path
+  const __dirname = path.dirname(__filename); // Get the directory name from the file path
+
+  const assetsPath = path.join(__dirname, '..', 'assets'); // '..' moves up one directory level to the root of CMServer
+  const metadataFilePath = path.join(assetsPath, 'metadata.json');
+  
+  // Check if the metadata.json file exists
+  if (fs.existsSync(metadataFilePath)) {
+    const metadata = JSON.parse(fs.readFileSync(metadataFilePath, 'utf-8'));
+    res.json(metadata); // Send metadata as a response
+  } else {
+    res.status(404).json({ message: 'Metadata file not found' });
+  }
+})
  
   // router.post('/saveData', async (req, res) => {
   //   console.log('Request Body:', req.body); // Log the incoming request body
