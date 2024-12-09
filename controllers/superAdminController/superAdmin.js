@@ -144,7 +144,7 @@ export const listColumns=async(req,res)=>{
     const attributes = MasterConfiguration.getAttributes();  // Get the model attributes
     const columns = Object.keys(attributes)
       .filter((key) => key.startsWith('column_'));  // Filter out non-column fields
-
+      
     res.json({ columns });
     
   } catch (error) {

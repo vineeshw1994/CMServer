@@ -1,5 +1,6 @@
 import express from "express";
 import MasterConfiguration from "../models/masterModel.js";
+import { columnList } from "../controllers/technicalAdmin/technicalAdmin.js";
 
 
 const router = express.Router();
@@ -201,4 +202,6 @@ console.log('hiiii');
     }
   });
   
+router.get('/columnList',columnList)
+
 export default router;
