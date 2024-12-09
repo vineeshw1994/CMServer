@@ -28,8 +28,6 @@ app.use(cors({
 }));
 
 
-
-
 app.use('/api/authentication',authRoute)
 app.use('/api/teachnical',technicalAdminRoute)
 app.use('/api/superAdmin',superAdminRoute)
