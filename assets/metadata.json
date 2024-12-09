@@ -1,6 +1,35 @@
-{
-  "name": "MasterConfiguration",
-  "createdAt": "2024-12-09T11:17:44.354Z",
-  "version": "1.0",
-  "description": "Metadata file for assets folder"
-}
+[
+  {
+    "name": "MasterConfiguration",
+    "createdAt": "2024-12-09T12:35:47.235Z",
+    "version": "1.0",
+    "description": "Metadata file for assets folder"
+  },
+  {
+    "category": "MOBILE",
+    "subcategory": "sony",
+    "columnMapping": [
+      {
+        "column_3": ""
+      },
+      {
+        "column_7": ""
+      }
+    ]
+  },
+  {
+    "category": "MOBILE",
+    "subcategory": "sony",
+    "columnMapping": [
+      {
+        "column_1": ""
+      },
+      {
+        "column_2": ""
+      },
+      {
+        "column_3": ""
+      }
+    ]
+  }
+]
