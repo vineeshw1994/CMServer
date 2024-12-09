@@ -37,5 +37,20 @@
         "column_2": ""
       }
     ]
+  },
+  {
+    "category": "Rakesh",
+    "subcategory": "rks",
+    "columnMapping": [
+      {
+        "column_1": ""
+      },
+      {
+        "column_2": ""
+      },
+      {
+        "column_7": ""
+      }
+    ]
   }
 ]
