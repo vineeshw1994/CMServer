@@ -1,7 +1,11 @@
-
+import User from "../../models/userModel.js";
+import bcrypt from 'bcryptjs';
+import { generateOtp, sendOtpEmail } from "../../utils/otp.js";
+import jwt from 'jsonwebtoken';
 
 export const loginAuthentication =async(req,res)=>{
     try {
+        console.log('req',req.body)
         const { email, password, role } = req.body;
 
         // Step 1: Validate empty fields
@@ -11,7 +15,8 @@ export const loginAuthentication =async(req,res)=>{
       
         
           // Step 2: Check if the user exists
-          const user = await User.findOne({ email });
+          const user = await User.findOne({ where: { email } });
+      console.log('use',user);
       
           if (!user) {
             return res.status(400).json({ error: 'Invalid credentials: Email does not exist.' });
@@ -19,9 +24,12 @@ export const loginAuthentication =async(req,res)=>{
       
           // Step 3: Validate the password
           const isPasswordValid = await bcrypt.compare(password, user.password);
+          console.log('pas',isPasswordValid)
           if (!isPasswordValid) {
             return res.status(400).json({ error: 'Invalid credentials: Incorrect password.' });
           }
+
+          
       
           // Step 4: Validate the role
           if (user.role !== role) {
@@ -35,9 +43,14 @@ export const loginAuthentication =async(req,res)=>{
               role: user.role,
             },
           };
+
+          console.log('paylo',payload);
+          
       
           const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
       
+          console.log('tok',token);
+          
           // Send the JWT Token as a cookie
           res.cookie("accessToken", token, {
             httpOnly: true, // Secure cookie
@@ -63,9 +76,7 @@ export const loginAuthentication =async(req,res)=>{
         
     }
 }
-import User from "../../models/userModel.js";
-import bcrypt from 'bcryptjs';
-import { generateOtp, sendOtpEmail } from "../../utils/otp.js";
+
 
 
 
