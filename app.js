@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import technicalAdminRoute from './routes/technicalAdminRoute.js'
 import superAdminRoute from './routes/superAdminRoute.js'
 import businessAdminRoute from './routes/bussinessAdminRoute.js'
+import authRoute from './routes/authRoute.js'
 
 import bodyParser from 'body-parser';
 
@@ -26,7 +27,7 @@ app.use(cors({
 
 
 
-
+app.use('/api/authentication',authRoute)
 app.use('/api/teachnical',technicalAdminRoute)
 app.use('/api/superAdmin',superAdminRoute)
 app.use('/api/businessAdmin',businessAdminRoute)
