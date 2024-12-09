@@ -1,7 +1,8 @@
 import express from "express";
 import MasterConfiguration from "../models/masterModel.js";
 import { columnList } from "../controllers/technicalAdmin/technicalAdmin.js";
-
+import  fs from 'fs' ;
+import path from "path";
 
 const router = express.Router();
 
@@ -40,23 +41,26 @@ console.log('columnMapping',columnMapping);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-router.post('/saveCategory', async (req, res) => {
-  const { category, subcategory,  columnMapping } = req.body;
-console.log('hiiiiffffffffffffffffffffffffffffffffffff',req.body);
 
-  try {
-    const newMasterConfig = await MasterConfiguration.create({
-      category,
-      subCategory: subcategory || null, // Handle optional subcategory
-      columnMapping: JSON.stringify({  columnMapping }), // Store as JSON
-    });
 
-    res.status(201).json(newMasterConfig);
-  } catch (error) {
-    console.error('Error saving category:', error);
-    res.status(500).json({ error: 'Failed to save category' });
-  }
-});
+// router.post('/saveCategory', async (req, res) => {
+//   const { category, subcategory,  columnMapping } = req.body;
+// console.log('hiiiiffffffffffffffffffffffffffffffffffff',req.body);
+
+//   try {
+//     const newMasterConfig = await MasterConfiguration.create({
+//       category,
+//       subCategory: subcategory || null, // Handle optional subcategory
+//       columnMapping: JSON.stringify({  columnMapping }), // Store as JSON
+//     });
+
+//     res.status(201).json(newMasterConfig);
+//   } catch (error) {
+//     console.error('Error saving category:', error);
+//     res.status(500).json({ error: 'Failed to save category' });
+//   }
+// });
+
 
   router.get('/getCategories', async (req, res) => {
 console.log('hiiii');
