@@ -67,5 +67,32 @@
         "column_7": "s4"
       }
     ]
+  },
+  {
+    "category": "rah",
+    "subcategory": "har",
+    "columnMapping": [
+      {
+        "column_1": "id"
+      },
+      {
+        "column_2": "name"
+      }
+    ]
+  },
+  {
+    "category": "EnetegationTech",
+    "subcategory": "Developers",
+    "columnMapping": [
+      {
+        "column_1": "Id"
+      },
+      {
+        "column_2": "Name"
+      },
+      {
+        "column_3": "Role"
+      }
+    ]
   }
 ]

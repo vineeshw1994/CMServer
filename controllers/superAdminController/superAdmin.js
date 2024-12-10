@@ -319,3 +319,46 @@ export const saveColumnName =async(req,res)=>{
   }
 }
 
+export const saveColumnData =async(req,res)=>{
+  try {
+    const { categoryId,categoryData, columnData } = req.body;
+    console.log('Category ID:', categoryId);
+    console.log('Column Data:', columnData);
+
+    // Loop through each row of the column data
+    console.log('Category ID:', categoryId);
+    console.log('Category Data:', categoryData);  // categoryData contains category and subCategory
+    console.log('Column Data:', columnData);
+
+    // Loop through each row of the column data
+    for (let i = 0; i < columnData.length; i++) {
+      const row = columnData[i];
+
+      // Ensure category and subCategory are provided
+      const dataToSave = {
+        category: categoryData.category || 'Default Category',  // Use a default if category is missing
+        subCategory: categoryData.subCategory || 'Default SubCategory',  // Default if missing
+      };
+
+      // Dynamically assign each column value from the row object
+      for (let columnIndex = 1; columnIndex <= 30; columnIndex++) {
+        const columnName = `column_${columnIndex}`;  // Construct column names like column_1, column_2, etc.
+        if (row[columnName]) {
+          dataToSave[columnName] = row[columnName];  // Assign the value to the respective column
+        }
+      }
+
+      // Save the row to the database (insert one by one)
+      await MasterConfiguration.create(dataToSave);
+    }
+
+    res.status(200).json({ message: 'Data saved successfully' });
+    
+    
+  } catch (error) {
+    console.error('Error saving column Data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+    
+  }
+}
+
