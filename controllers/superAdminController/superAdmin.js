@@ -158,59 +158,6 @@ export const listColumns=async(req,res)=>{
   }
 }
 
-export const saveColumnName =async(req,res)=>{
-  try {
-    console.log('req',req.body);
-    const { category, subcategory, columnMapping } = req.body;
-
-    console.log('Request Body:', req.body); // For debugging purposes
-
-    // Step 1: Find the record in MasterConfiguration using category and subcategory
-    let record = await MasterConfiguration.findOne({
-      where: {
-        category: category,    // Match by category
-        subCategory: subcategory  // Match by subcategory
-      }
-    });
-
-    // Step 2: If the record doesn't exist, create a new one
-    if (!record) {
-      record = await MasterConfiguration.create({
-        category: category,
-        subCategory: subcategory
-      });
-      console.log(`New record created for category: ${category}, subcategory: ${subcategory}`);
-    }
-
-    // Step 3: Loop through the columnMapping to dynamically update columns
-    const updateData = {};
-
-    // Loop through the columnMapping array
-    for (const column of columnMapping) {
-      // Get the column name and its value
-      const columnKey = Object.keys(column)[0];  // Get the column name (e.g., 'column_2')
-      const columnValue = column[columnKey];     // Get the value (e.g., 'r4')
-
-      // Add to the updateData object
-      updateData[columnKey] = columnValue;
-    }
-
-    // Step 4: Update the record with the new values
-    await record.update(updateData);
-
-    // Step 5: Send a success response with the updated record
-    res.status(200).json({
-      message: 'Columns updated successfully!',
-      updatedRecord: record
-    });
-    
-    
-  } catch (error) {
-    console.error('Error saving column name:', error);
-    res.status(500).json({ error: 'Internal server error' });
-    
-  }
-}
 
 
 export const updateMetadata =async(req,res)=>{
@@ -279,6 +226,95 @@ export const listMetaData =async(req,res)=>{
     console.error('Error listing metadata:', error);
     res.status(500).json({ error: 'Internal server error' });
 
+    
+  }
+}
+
+export const getCategoryData =async(req,res)=>{
+  try {
+    const { id } = req.params; // Get the category id from URL params
+    const __filename = fileURLToPath(import.meta.url); // Get the file URL and convert it to a file path
+    const __dirname = path.dirname(__filename); // Get the directory of this file
+  
+    // Adjust the path to metadata.json by going up two directories
+    const metadataFilePath = path.join(__dirname, '..', '..', 'assets', 'metadata.json');
+    
+    // Read metadata.json
+    fs.readFile(metadataFilePath, 'utf-8', (err, data) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error reading metadata file' });
+      }
+      
+      const metadata = JSON.parse(data);
+  
+      // Log the requested category id to verify it's being passed correctly
+  
+      // Ensure that `id` is a valid number and within bounds
+      const index = parseInt(id, 10);  // Convert id to an integer
+  
+      if (isNaN(index) || index < 0 || index >= metadata.length) {
+        return res.status(404).json({ error: 'Invalid index' });
+      }
+  
+      // Directly access the element by index
+      const categoryData = metadata[index];
+  
+      if (categoryData) {
+        return res.json(categoryData); // Send category data to frontend
+      } else {
+        return res.status(404).json({ error: 'Category not found' });
+      }
+  });
+    
+    
+  } catch (error) {
+    console.error('Error getting metadata:', error);
+    res.status(500).json({ error: 'Internal server error' });
+    
+  }
+}
+
+
+export const saveColumnName =async(req,res)=>{
+  try {
+  const { category, columnMapping } = req.body;
+
+  
+  const categoryIndex = parseInt(category, 10);
+
+  const __filename = fileURLToPath(import.meta.url); // Get the file URL and convert it to a file path
+  const __dirname = path.dirname(__filename); // Get the directory of this file
+
+  // Adjust the path to metadata.json by going up two directories
+  const metadataFilePath = path.join(__dirname, '..', '..', 'assets', 'metadata.json');
+
+  fs.readFile(metadataFilePath, 'utf-8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading metadata file' });
+    }
+
+    const metadata = JSON.parse(data);
+
+    // Ensure the category index is valid
+    if (categoryIndex < 0 || categoryIndex >= metadata.length) {
+      return res.status(404).json({ error: 'Category index out of bounds' });
+    }
+
+    // Update the column mapping for the found category
+    metadata[categoryIndex].columnMapping = columnMapping;
+
+    // Write the updated data back to the metadata.json file
+    fs.writeFile(metadataFilePath, JSON.stringify(metadata, null, 2), 'utf-8', (err) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error saving metadata file' });
+      }
+      return res.status(200).json({ message: 'Column names saved successfully' });
+    });
+  });
+    
+  } catch (error) {
+    console.error('Error saving column Name:', error);
+    res.status(500).json({ error: 'Internal server error' });
     
   }
 }

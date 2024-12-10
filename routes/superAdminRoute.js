@@ -1,7 +1,7 @@
 import express from "express";
 
 import { saveCategory,ListMetaCard,saveData,getCategoryColumn,listColumns,saveColumnName,updateMetadata
-    ,listMetaData
+    ,listMetaData,getCategoryData
  } from "../controllers/superAdminController/superAdmin.js";
 const router = express.Router();
 
@@ -11,9 +11,9 @@ router.post('/saveData',saveData)
 router.get('/getCategoryColumns/:id',getCategoryColumn)
 
 router.get('/columnList',listColumns)
-router.post('/saveColumnName',saveColumnName)
 router.post('/updateMetadata',updateMetadata)
 router.get('/listMetaData',listMetaData)
-
+router.get('/getCategoryData/:id',getCategoryData)
+router.post('/saveColumnName',saveColumnName)
 
 export default router;

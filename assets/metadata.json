@@ -4,13 +4,13 @@
     "subcategory": "123321",
     "columnMapping": [
       {
-        "column_1": ""
+        "column_1": "r4"
       },
       {
-        "column_2": ""
+        "column_2": "4r"
       },
       {
-        "column_3": ""
+        "column_3": "r4"
       }
     ]
   },
@@ -19,10 +19,52 @@
     "subcategory": "4r",
     "columnMapping": [
       {
+        "column_1": "rakesh"
+      },
+      {
+        "column_6": "s"
+      }
+    ]
+  },
+  {
+    "category": "Entegation",
+    "subcategory": "Developers",
+    "columnMapping": [
+      {
+        "column_1": "Id"
+      },
+      {
+        "column_2": "Name"
+      },
+      {
+        "column_3": "Role"
+      },
+      {
+        "column_4": "Phone number"
+      }
+    ]
+  },
+  {
+    "category": "new",
+    "subcategory": "newcat",
+    "columnMapping": [
+      {
         "column_1": ""
       },
       {
         "column_6": ""
+      }
+    ]
+  },
+  {
+    "category": "sre",
+    "subcategory": "ers",
+    "columnMapping": [
+      {
+        "column_2": "ss"
+      },
+      {
+        "column_7": "s4"
       }
     ]
   }
