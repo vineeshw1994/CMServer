@@ -5,12 +5,7 @@ import { fileURLToPath } from 'url'; // Import fileURLToPath from the 'url' modu
 
 
 export const createMetadataFile = () => {
-    const metadata = [{
-      name:'MasterConfiguration',
-      createdAt: new Date(),
-      version: '1.0',
-      description: 'Metadata file for assets folder',
-    }];
+    const metadata = [];
   
     // Get the current directory path using import.meta.url
     const __filename = fileURLToPath(import.meta.url); // Get the file URL and convert it to a file path

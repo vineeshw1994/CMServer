@@ -1,55 +1,28 @@
 [
   {
-    "category": "rakesh",
-    "subcategory": "s",
+    "category": "Rakesh",
+    "subcategory": "123321",
+    "columnMapping": [
+      {
+        "column_1": ""
+      },
+      {
+        "column_2": ""
+      },
+      {
+        "column_3": ""
+      }
+    ]
+  },
+  {
+    "category": "r4",
+    "subcategory": "4r",
     "columnMapping": [
       {
         "column_1": ""
       },
       {
         "column_6": ""
-      }
-    ]
-  },
-  {
-    "category": "Rakesh",
-    "subcategory": "s",
-    "columnMapping": [
-      {
-        "column_1": ""
-      },
-      {
-        "column_2": ""
-      },
-      {
-        "column_6": ""
-      }
-    ]
-  },
-  {
-    "category": "new",
-    "subcategory": "newww",
-    "columnMapping": [
-      {
-        "column_1": ""
-      },
-      {
-        "column_2": ""
-      }
-    ]
-  },
-  {
-    "category": "Rakesh",
-    "subcategory": "rks",
-    "columnMapping": [
-      {
-        "column_1": ""
-      },
-      {
-        "column_2": ""
-      },
-      {
-        "column_7": ""
       }
     ]
   }

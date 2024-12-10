@@ -135,7 +135,7 @@ const MasterConfiguration = db.define('MasterConfiguration', {
 
 export const syncMasterConfigurationTable = async () => {
     try {
-        await MasterConfiguration.sync({ alter: true });
+        await MasterConfiguration.sync();
         console.log('MasterConfiguration table updated successfully');
     } catch (error) {
         console.error('Error updating MasterConfiguration table:', error);
